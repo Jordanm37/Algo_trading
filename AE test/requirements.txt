@@ -1,0 +1,11 @@
+numpy
+pandas
+scipy
+seaborn
+matplotlib
+statsmodels
+sklearn
+lightgbm
+scikit-optimize
+sktime
+tensorflow
