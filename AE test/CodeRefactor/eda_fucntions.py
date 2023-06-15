@@ -498,10 +498,6 @@ def plot_normalised_price(ts_1, ts_2):
 
 
 
-
-
-
-
 def load_clean_data(filename):
     clean_df = pd.read_csv(filename)
     clean_df.columns = ['datetime', 'ts1_imputed', 'ts2_imputed']
@@ -577,3 +573,45 @@ def analyse_outliers(rt1, rt2, frequency):
     print_series_comparison_info(rt1, rt2, outliers_rt1, outliers_rt2)
 
 
+##### main functions #####
+def plot_data(ts1, ts2, name):
+    # Plot normalised time series
+    plot_normalised_price(ts1, ts2)
+    # Plot series and returns
+    plot_series_and_returns(ts1, 'ts1_'+name)
+    plot_series_and_returns(ts2, 'ts2_'+name)
+    
+def seasonality_analysis(ts1, ts2, freq_list=['H', 'D', 'W']):
+    # Seasonality analysis
+    print("Seasonality analysis for ts1:")
+    analyse_seasonality(ts1, 'ts1', freq_list)
+
+    print("Seasonality analysis for ts2:")
+    analyse_seasonality(ts2, 'ts2', freq_list)
+
+def spectral_analysis(rt1, rt2, freq_list=['H', 'D', 'W']):
+    # Spectral analysis
+    print("Spectral analysis for rt1:")
+    spectral_analysis(rt1, 'ts1', freq_list)
+
+    print("Spectral analysis for rt2:")
+    spectral_analysis(rt2, 'ts2', freq_list)    
+    
+def distribution_analysis(rt1, rt2):
+    rt = pd.concat([rt1, rt2], axis=1)
+    print("Distribution analysis for log returns:")
+    analyse_distribution(rt)
+    
+def volatility_clustering_analysis(rt1, rt2):
+    print("Volatility clustering analysis for rt1:")
+    assess_and_plot_volatility_clustering(rt1)
+
+    print("Volatility clustering analysis for rt2:")
+    assess_and_plot_volatility_clustering(rt2)
+    
+def outlier_analysis(rt1, rt2):
+    print("Outlier analysis for rt1 and rt2:")
+    for period in ['H', 'D']:
+        rt1_d = rt1.resample(period).mean().dropna()
+        rt2_d = rt2.resample(period).mean().dropna()
+        analyse_outliers(rt1_d, rt2_d, period)
